@@ -16,7 +16,7 @@ from openpyxl import load_workbook
 
 HTMLPATH='html/'
 WORDPATH='word/'
-MODULEPATH='module/'
+MODULEPATH='template/'
 EXCELPATH='excel/'
 PDFPATH='pdf/'
 
