@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # author: hjxfire
 # Copyright (C) 2018 hjxfire <hjxfire@outlook.com>
+# https://github.com/hjxfire/nsfocus.vsr-tools.S_NC
 # 用法: python3 start.py
 
 import os
@@ -12,13 +13,15 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
 
 from openpyxl import load_workbook
+import time
 
 
 HTMLPATH='html/'
 WORDPATH='word/'
-MODULEPATH='template/'
+TEMPLATEPATH= 'template/'
 EXCELPATH='excel/'
 PDFPATH='pdf/'
+PDFOUTPUTPATH='pdfOutput/'
 
 #获取需要处理的文件夹
 def getFilesPath(dirPath):
@@ -66,13 +69,13 @@ def processData(dirname,sheet,domainList):
         sheet.cell(i+3,11,'站点不可达')
         return 0
     #================================================
-    #搜集内容:时间time[]
+    #搜集内容:时间timeStatistics[]
     for tr in tr_even:
         if tr.find('th',text='时间统计')!=None:
-            time=tr.td.text.split('\n')[1:4]
-            time[0]=time[0].strip()[3:22]   #timeStart
-            time[1]=time[1].strip()[3:22]   #timeStop
-            time[2]=time[2].strip()[3:]     #timeConsume
+            timeStatistics=tr.td.text.split('\n')[1:4]
+            timeStatistics[0]=timeStatistics[0].strip()[3:22]   #timeStart
+            timeStatistics[1]=timeStatistics[1].strip()[3:22]   #timeStop
+            timeStatistics[2]=timeStatistics[2].strip()[3:]     #timeConsume
             break
 
     #================================================
@@ -114,18 +117,22 @@ def processData(dirname,sheet,domainList):
     if flag==False:
         print(domain+':汇总表中未找到')
         return 0
-    wordFileName='00620180817'+str(i+1).zfill(5)+'a.docx'
-    wordFileName_Pdf='00620180817'+str(i+1).zfill(5)+'a.pdf'
-    pdfFileName='00620180817'+str(i+1).zfill(5)+'ad.pdf'
+
+    # 获取当前年月日
+    timeStr=time.strftime('%Y%m%d',time.localtime())
+    #设置文件名
+    wordFileName='006'+timeStr+str(i+1).zfill(5)+'a.docx'
+    wordFileName_Pdf='006'+timeStr+str(i+1).zfill(5)+'a.pdf'
+    pdfFileName='006'+timeStr+str(i+1).zfill(5)+'ad.pdf'
     wordFilePath=WORDPATH+wordFileName
     # 写入excel
     for j in range(len(distribut)):
         #distribut里放的是数字形式,如果为string,则excel里面也会算文字
         sheet.cell(i+3,j+3,distribut[j])
-    sheet.cell(i+3,j+4,time[0])
+    sheet.cell(i+3,j+4,timeStatistics[0])
     sheet.cell(i+3,j+5,wordFileName_Pdf)
     #从模板word复制到WORDPATH下
-    os.system('cp '+moduleFilePath+' '+wordFilePath)
+    os.system('cp ' + templateFilePath + ' ' + wordFilePath)
     wordFile=Document(wordFilePath)
     tables=wordFile.tables
     #第一个表所有和第二个表的时间
@@ -134,13 +141,13 @@ def processData(dirname,sheet,domainList):
     run.font.size=Pt(16)
     run.font.bold=1
     ##时间
-    for i in range(len(time)):
+    for i in range(len(timeStatistics)):
         #1表
-        run=tables[0].cell(i+1,1).paragraphs[0].add_run(time[i])
+        run=tables[0].cell(i+1,1).paragraphs[0].add_run(timeStatistics[i])
         run.font.size = Pt(16)
         run.font.bold = 1
         #2表
-        run=tables[1].cell(i+3,1).paragraphs[0].add_run(time[i])
+        run=tables[1].cell(i+3,1).paragraphs[0].add_run(timeStatistics[i])
         run.font.size = Pt(11)
     #第二个表剩余的内容
     ##域名
@@ -182,12 +189,12 @@ def processData(dirname,sheet,domainList):
     '''
     重命名pdf
     '''
-    os.system('mv '+PDFPATH+'http_'+domain+'.pdf '+PDFPATH+pdfFileName)
+    os.system('cp '+PDFPATH+dirname+'/http_'+domain+'.pdf '+PDFOUTPUTPATH+pdfFileName)
     return 0
 
 dirsname=getFilesPath(HTMLPATH)
 excelFilePath=EXCELPATH+getFilesPath(EXCELPATH)[0]
-moduleFilePath=MODULEPATH+getFilesPath(MODULEPATH)[0]
+templateFilePath= TEMPLATEPATH + getFilesPath(TEMPLATEPATH)[0]
 i=0
 
 # 获取工作簿

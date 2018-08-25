@@ -105,4 +105,9 @@ ENV/
 .idea/
 
 #local
-漏洞扫描安全评估报告（简版无图）.docx
+excel/
+html/
+pdf/
+pdfOutput/
+template/
+word/
