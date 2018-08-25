@@ -1,4 +1,4 @@
-##漏扫报告整理工具v2.2 使用说明
+##漏扫报告整理工具.简版(无图表)v2.2 使用说明
 ###### author: hjxfire
 ###### Copyright (C) 2018 hjxfire <hjxfire@outlook.com>
 ###1. 环境
