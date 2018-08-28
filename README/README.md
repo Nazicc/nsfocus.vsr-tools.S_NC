@@ -1,4 +1,4 @@
-##漏扫报告整理工具.简版(无图表)v2.2 使用说明
+##漏扫报告整理工具.简版(无图表)v2.2.1 使用说明
 ###### author: hjxfire
 ###### Copyright (C) 2018 hjxfire <hjxfire@outlook.com>
 ###### https://github.com/hjxfire/nsfocus.vsr-tools.S_NC
@@ -41,6 +41,9 @@ pdf/中存放导出的pdf格式的报告
 4. 要求无数据,未填写的简报作为模板是因为当前docx模块对table中单个单元格没有更改字体和字号的函数,所有用游程run"曲线救国",使用的是添加,不是覆盖,因此有数据的模板还需要删除数据,每个报告都要先删除模板数据再写有点浪费时间.
 
 <hr style="background-color: rgb(25, 172, 230);height: 1px;">
+
+####v2.2.1更新
+1. 添加输出:运行时会输出当前处理的文件夹名
 
 ####v2.2更新
 1. 放置简版报告模板的目录由module/改为template/

@@ -204,6 +204,7 @@ sheet = wb.active
 domainList = list(sheet.columns)[1][2:]
 
 for dirname in dirsname:
+    print(dirname)
     processData(dirname,sheet,domainList)
     i+=1
 
